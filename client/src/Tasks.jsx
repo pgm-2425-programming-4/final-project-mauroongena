@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getTasks } from "./queries/getTasks.jsx";
 
-export function Meals() {
+export function Tasks() {
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["tasks"],
     queryFn: getTasks,
