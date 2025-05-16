@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * status service
+ * task-status service
  */
 
 const { createCoreService } = require('@strapi/strapi').factories;
 
-module.exports = createCoreService('api::status.status');
+module.exports = createCoreService('api::task-status.task-status');

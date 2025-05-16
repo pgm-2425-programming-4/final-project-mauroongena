@@ -1,11 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "statuses",
+  "collectionName": "task_statuses",
   "info": {
-    "singularName": "status",
-    "pluralName": "statuses",
-    "displayName": "Task Status",
-    "description": ""
+    "singularName": "task-status",
+    "pluralName": "task-statuses",
+    "displayName": "Task Status"
   },
   "options": {
     "draftAndPublish": true

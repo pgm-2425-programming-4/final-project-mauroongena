@@ -433,13 +433,12 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiStatusStatus extends Struct.CollectionTypeSchema {
-  collectionName: 'statuses';
+export interface ApiTaskStatusTaskStatus extends Struct.CollectionTypeSchema {
+  collectionName: 'task_statuses';
   info: {
-    description: '';
     displayName: 'Task Status';
-    pluralName: 'statuses';
-    singularName: 'status';
+    pluralName: 'task-statuses';
+    singularName: 'task-status';
   };
   options: {
     draftAndPublish: true;
@@ -451,7 +450,7 @@ export interface ApiStatusStatus extends Struct.CollectionTypeSchema {
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
-      'api::status.status'
+      'api::task-status.task-status'
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
@@ -485,7 +484,10 @@ export interface ApiTaskTask extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     project: Schema.Attribute.Relation<'manyToOne', 'api::project.project'>;
     publishedAt: Schema.Attribute.DateTime;
-    task_status: Schema.Attribute.Relation<'manyToOne', 'api::status.status'>;
+    task_status: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::task-status.task-status'
+    >;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1004,7 +1006,7 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::category.category': ApiCategoryCategory;
       'api::project.project': ApiProjectProject;
-      'api::status.status': ApiStatusStatus;
+      'api::task-status.task-status': ApiTaskStatusTaskStatus;
       'api::task.task': ApiTaskTask;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

@@ -34,7 +34,7 @@
     "task_status": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::status.status",
+      "target": "api::task-status.task-status",
       "inversedBy": "tasks"
     }
   }
