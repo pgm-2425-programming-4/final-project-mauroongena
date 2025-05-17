@@ -1,9 +1,16 @@
-export async function getTasks() {
-  const url = new URL(
-    "http://localhost:1337/api/tasks?populate=*&filters[task_status][title][$eq]=Backlog"
-  );
+export async function getTasks({ page = 1, pageSize = 20, project } = {}) {
+  const base = `http://localhost:1337/api/tasks?populate=*`;
 
-  const result = await fetch(url.toString(), {
+  const filters = [
+    `filters[task_status][title][$eq]=Backlog`,
+    `filters[project][title][$eq]=${encodeURIComponent(project)}`,
+    `pagination[page]=${page}`,
+    `pagination[pageSize]=${pageSize}`,
+  ];
+
+  const urlString = `${base}&${filters.join("&")}`;
+
+  const result = await fetch(urlString, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -13,7 +20,7 @@ export async function getTasks() {
 
   if (!result.ok) {
     throw new Error("Failed to fetch tasks");
-  }
+  } 
 
   const data = await result.json();
   return data;

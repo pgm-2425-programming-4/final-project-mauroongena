@@ -5,6 +5,8 @@ export function Backlog({ tasks }) {
         <tr>
           <th>Title</th>
           <th>Description</th>
+          <th>Project</th>
+          <th>Labels</th>
         </tr>
       </thead>
       <tbody>
@@ -12,6 +14,8 @@ export function Backlog({ tasks }) {
           <tr key={task.id}>
             <td>{task.title}</td>
             <td>{task.description}</td>
+            <td>{task.project.title}</td>
+            <td>{task.labels.map((label) => label.title).join(", ")}</td>
           </tr>
         ))}
       </tbody>
