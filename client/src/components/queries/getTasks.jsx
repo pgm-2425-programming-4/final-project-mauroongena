@@ -14,13 +14,13 @@ export async function getTasks({ page = 1, pageSize = 20, project } = {}) {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer 03a25649aa02c939b2a44488c23b21a2ae47c98fb3e053b67f6156d4e29b6e729341383159bfca12360bb2a3d7da7334e84c01cc7cad1cb3e8a8436283692a02787b3e4b9d0432727c9c08a144c08f008cb0697e9ea6c61e993cdf067bab1df139143b997ead9dcc680df9cfa5699f1f5a3e324a7e466125b58fbb68b6130224`,
+      Authorization: `Bearer c4c2e11e664defb6cbafbe1fa8869b6084241d377d3228ffef7762693cc220ff380f646903e7a3899033237013e55966d263431b7ed2958e86289d8916d571a13fc58af2bdd5fb3519f6593b6ed8ad06ff53e7d3b30290b38d7b9523675a12f74525ff164dd0bc7e096563f827c3f49f41639ad25efc593cf6ed12786d43451a`,
     },
   });
 
   if (!result.ok) {
     throw new Error("Failed to fetch tasks");
-  } 
+  }
 
   const data = await result.json();
   return data;

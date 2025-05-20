@@ -25,15 +25,15 @@
       "target": "api::project.project",
       "inversedBy": "tasks"
     },
-    "labels": {
+    "task_labels": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::task-label.task-label",
+      "mappedBy": "task"
+    },
+    "task_statuses": {
       "type": "relation",
       "relation": "manyToMany",
-      "target": "api::category.category",
-      "inversedBy": "tasks"
-    },
-    "task_status": {
-      "type": "relation",
-      "relation": "manyToOne",
       "target": "api::task-status.task-status",
       "inversedBy": "tasks"
     }

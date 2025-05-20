@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "task_statuses",
+  "collectionName": "task_labels",
   "info": {
-    "singularName": "task-status",
-    "pluralName": "task-statuses",
-    "displayName": "Task Status",
+    "singularName": "task-label",
+    "pluralName": "task-labels",
+    "displayName": "Task Label",
     "description": ""
   },
   "options": {
@@ -14,11 +14,11 @@
     "title": {
       "type": "string"
     },
-    "tasks": {
+    "task": {
       "type": "relation",
-      "relation": "manyToMany",
+      "relation": "manyToOne",
       "target": "api::task.task",
-      "mappedBy": "task_statuses"
+      "inversedBy": "task_labels"
     }
   }
 }
