@@ -8,21 +8,29 @@ function BacklogPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (selectedProject !== "") {
-      setLoading(true);
-      const timer = setTimeout(() => setLoading(false), 3000);
-      return () => clearTimeout(timer);
-    }
+    setLoading(true);
+    const timer = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(timer);
   }, [selectedProject]);
 
   let content;
   if (loading) {
-    content = (
-      <div
-        className="skeleton-block"
-        style={{ minHeight: "30rem", width: "100dvh" }}
-      ></div>
-    );
+    if (selectedProject) {
+      content = (
+        <div
+          className="skeleton-block"
+          style={{ minHeight: "30rem", width: "100dvh" }}
+        ></div>
+      );
+    } else {
+      content = projects.map((_, idx) => (
+        <div
+          key={idx}
+          className="skeleton-block"
+          style={{ minHeight: "30rem", width: "100dvh" }}
+        ></div>
+      ));
+    }
   } else if (selectedProject) {
     content = <PaginatedBacklog project={selectedProject} />;
   } else {
