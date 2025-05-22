@@ -13,12 +13,6 @@
   "attributes": {
     "title": {
       "type": "string"
-    },
-    "task": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::task.task",
-      "inversedBy": "task_labels"
     }
   }
 }

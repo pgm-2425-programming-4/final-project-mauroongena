@@ -425,7 +425,6 @@ export interface ApiTaskLabelTaskLabel extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    task: Schema.Attribute.Relation<'manyToOne', 'api::task.task'>;
     title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -455,7 +454,7 @@ export interface ApiTaskStatusTaskStatus extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    tasks: Schema.Attribute.Relation<'manyToMany', 'api::task.task'>;
+    task: Schema.Attribute.Relation<'oneToOne', 'api::task.task'>;
     title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -484,12 +483,8 @@ export interface ApiTaskTask extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     project: Schema.Attribute.Relation<'manyToOne', 'api::project.project'>;
     publishedAt: Schema.Attribute.DateTime;
-    task_labels: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::task-label.task-label'
-    >;
-    task_statuses: Schema.Attribute.Relation<
-      'manyToMany',
+    task_status: Schema.Attribute.Relation<
+      'oneToOne',
       'api::task-status.task-status'
     >;
     title: Schema.Attribute.String & Schema.Attribute.Required;
