@@ -18,19 +18,19 @@
     "@strapi/plugin-cloud": "5.13.0",
     "@strapi/plugin-users-permissions": "5.13.0",
     "@strapi/strapi": "5.13.0",
+    "@tanstack/react-router": "^1.120.5",
     "better-sqlite3": "11.3.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
     "styled-components": "^6.0.0"
   },
-  "devDependencies": {},
   "engines": {
     "node": ">=18.0.0 <=22.x.x",
     "npm": ">=6.0.0"
   },
   "strapi": {
-    "uuid": "8f71aab7-378b-459e-bdd4-44feaed6111e",
-    "installId": "c6ced92dc3d06237fef885b1933ab0d8683820f676542b263a1cfb9a2df9aa2f"
+    "uuid": "7fc4089e-cb01-4dd3-a2ee-386df5cf2b00",
+    "installId": "9eb2c488673cd37ee940fc1c5599a05e487b327466dc95a3c238d58598eb726b"
   }
 }

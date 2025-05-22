@@ -425,6 +425,10 @@ export interface ApiTaskLabelTaskLabel extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+<<<<<<< HEAD
+=======
+    task: Schema.Attribute.Relation<'manyToOne', 'api::task.task'>;
+>>>>>>> develop
     title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -465,7 +469,6 @@ export interface ApiTaskStatusTaskStatus extends Struct.CollectionTypeSchema {
 export interface ApiTaskTask extends Struct.CollectionTypeSchema {
   collectionName: 'tasks';
   info: {
-    description: '';
     displayName: 'Task';
     pluralName: 'tasks';
     singularName: 'task';
@@ -477,17 +480,25 @@ export interface ApiTaskTask extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+<<<<<<< HEAD
     description: Schema.Attribute.Text & Schema.Attribute.Required;
+=======
+    description: Schema.Attribute.Text;
+>>>>>>> develop
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::task.task'> &
       Schema.Attribute.Private;
     project: Schema.Attribute.Relation<'manyToOne', 'api::project.project'>;
     publishedAt: Schema.Attribute.DateTime;
+    task_labels: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::task-label.task-label'
+    >;
     task_status: Schema.Attribute.Relation<
       'oneToOne',
       'api::task-status.task-status'
     >;
-    title: Schema.Attribute.String & Schema.Attribute.Required;
+    title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

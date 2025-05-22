@@ -14,7 +14,11 @@ export async function getTasks({ page = 1, pageSize = 20, project } = {}) {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+<<<<<<< HEAD
       Authorization: `Bearer c4c2e11e664defb6cbafbe1fa8869b6084241d377d3228ffef7762693cc220ff380f646903e7a3899033237013e55966d263431b7ed2958e86289d8916d571a13fc58af2bdd5fb3519f6593b6ed8ad06ff53e7d3b30290b38d7b9523675a12f74525ff164dd0bc7e096563f827c3f49f41639ad25efc593cf6ed12786d43451a`,
+=======
+      Authorization: `Bearer a322703cff059649d6cee53f77ec2bd605fa86460f1e9272ff0db36c61789e59e8d0364fe88fa07099890c9c7308aa512abc48ac436f1bf14d657970e283b3883e9c8740694d5bd2dd72116a894ebbf59fb355a133961d5d9f3d81bd3f4f1a8872555ac2adc361dad1eb60cf2a4c6139796eca1ef330d4fe29e92ab1a75617cc`,
+>>>>>>> develop
     },
   });
 
