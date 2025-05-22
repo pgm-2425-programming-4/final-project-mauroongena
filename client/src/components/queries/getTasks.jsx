@@ -14,7 +14,7 @@ export async function getTasks({ page = 1, pageSize = 20, project } = {}) {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer a322703cff059649d6cee53f77ec2bd605fa86460f1e9272ff0db36c61789e59e8d0364fe88fa07099890c9c7308aa512abc48ac436f1bf14d657970e283b3883e9c8740694d5bd2dd72116a894ebbf59fb355a133961d5d9f3d81bd3f4f1a8872555ac2adc361dad1eb60cf2a4c6139796eca1ef330d4fe29e92ab1a75617cc`,
+      Authorization: `Bearer 3b16462ac859b9600de06b6d717a276d3bb7eae0046bd6e821ffad3f39f4ab0137961eacbb561ba992850b22a90b6f495d4735a8dbd56f35da9cbfd3ab18ea88b0c06ec0b8ea75ef8acf957fd9135c225aec5ee974ce3692614aeb01d8ea64431e2b1b559e492c2e9a93a76dd9cf1c86c4c8b86bb9523242d11dfb580b1bbdd0`,
     },
   });
 

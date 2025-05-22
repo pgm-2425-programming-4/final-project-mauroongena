@@ -4,8 +4,7 @@
   "info": {
     "singularName": "task-label",
     "pluralName": "task-labels",
-    "displayName": "Task Label",
-    "description": ""
+    "displayName": "Task Label"
   },
   "options": {
     "draftAndPublish": true
@@ -14,11 +13,11 @@
     "title": {
       "type": "string"
     },
-    "task": {
+    "tasks": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::task.task",
-      "inversedBy": "task_labels"
+      "mappedBy": "task_labels"
     }
   }
 }
