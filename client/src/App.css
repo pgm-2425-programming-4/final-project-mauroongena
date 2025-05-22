@@ -1,6 +1,6 @@
 #root {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   justify-content: center;
   align-items: center;
   gap: 2rem;
@@ -38,4 +38,13 @@ td {
   display: flex;
   align-items: center;
   gap: 2rem;
+}
+
+.backlog-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  justify-content: center;
+  align-items: start;
+  margin: 0 auto;
 }

@@ -6,7 +6,7 @@ import { Pagination } from "./Pagination";
 
 export function PaginatedBacklog({ project }) {
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["tasks", page, pageSize, project],
