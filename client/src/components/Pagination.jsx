@@ -12,7 +12,7 @@ export function Pagination({
       className="pagination-container"
       style={{ display: "flex", alignItems: "center", gap: "1rem" }}
     >
-      <label>
+      <div className="select">
         <select
           value={pageSize}
           onChange={(e) => onPageSizeChange(Number(e.target.value))}
@@ -24,7 +24,7 @@ export function Pagination({
             </option>
           ))}
         </select>
-      </label>
+      </div>
 
       <button
         onClick={() => onPageChange(currentPage - 1)}
