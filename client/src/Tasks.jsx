@@ -8,7 +8,16 @@ export function Tasks() {
   });
 
   if (isPending) {
-    return <span>Loading...</span>;
+    return (
+      <div
+        className="skeleton-block"
+        style={{ minHeight: "3em", width: "100%" }}
+      >
+        <div className="skeleton-block" style={{ marginBottom: "1em" }}></div>
+        <div className="skeleton-block" style={{ marginBottom: "1em" }}></div>
+        <div className="skeleton-block"></div>
+      </div>
+    );
   }
   if (isError) {
     return <span>Error: {error.message}</span>;
