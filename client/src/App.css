@@ -1,10 +1,5 @@
 #root {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  padding: 2rem;
+  padding: 2rem 0;
 }
 
 table {
@@ -14,12 +9,17 @@ table {
   margin: 0 auto;
 }
 
+button {
+  color: #ffffff;
+}
+
 th,
 td {
   border: 1px solid #888;
   padding: 0.5rem;
   text-align: center;
   vertical-align: middle;
+  color: #121212 !important;
 }
 
 .paginated-backlog {
@@ -32,10 +32,28 @@ td {
   align-items: center;
   gap: 2rem;
   padding: 1rem 2rem;
+  color: #121212;
 }
 
 .pagination-container {
   display: flex;
   align-items: center;
   gap: 2rem;
+}
+
+.backlog-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  justify-content: center;
+  align-items: start;
+  margin: 0 auto;
+}
+
+.header__title {
+  color: #ededed;
+}
+
+.select-project {
+  margin-bottom: 1rem !important;
 }
