@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import { PaginatedBacklog } from "../components/PaginatedBacklog.jsx";
+import { useNavigate } from "@tanstack/react-router";
 
 const projects = ["PGM3", "PGM4", "AtWork 2"];
 
 function BacklogPage() {
   const [selectedProject, setSelectedProject] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
-    const timer = setTimeout(() => setLoading(false), 1500);
+    const timer = setTimeout(() => setLoading(false), 1000);
     return () => clearTimeout(timer);
   }, [selectedProject]);
 
@@ -41,6 +43,9 @@ function BacklogPage() {
 
   return (
     <div>
+      <button className="button is-link" onClick={() => navigate({ to: "/" })}>
+        Terug
+      </button>
       <div className="select select-project">
         <select
           className="select-dropdown"
