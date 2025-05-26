@@ -11,7 +11,7 @@ export async function getTasks({ page = 1, pageSize = 20, project } = {}) {
   ];
 
   const urlString = `${base}&${filters.join("&")}`;
-
+  console.log("Fetching tasks from:", urlString);
   const result = await fetch(urlString, {
     method: "GET",
     headers: {
