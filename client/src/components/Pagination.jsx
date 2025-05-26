@@ -12,19 +12,19 @@ export function Pagination({
       className="pagination-container"
       style={{ display: "flex", alignItems: "center", gap: "1rem" }}
     >
-      <label>
+      <div className="select">
         <select
           value={pageSize}
           onChange={(e) => onPageSizeChange(Number(e.target.value))}
           style={{ marginLeft: "0.5rem" }}
         >
-          {[5, 10, 20, 50].map((size) => (
+          {[10, 15, 20, 25].map((size) => (
             <option key={size} value={size}>
               {size} per pagina
             </option>
           ))}
         </select>
-      </label>
+      </div>
 
       <button
         onClick={() => onPageChange(currentPage - 1)}
