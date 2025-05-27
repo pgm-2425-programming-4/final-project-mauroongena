@@ -57,3 +57,10 @@ td {
 .select-project {
   margin-bottom: 1rem !important;
 }
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}

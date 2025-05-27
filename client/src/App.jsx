@@ -1,16 +1,17 @@
 import "./App.css";
-import { PaginatedBacklog } from "./components/PaginatedBacklog.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StrictMode } from "react";
-import { Outlet } from "@tanstack/react-router";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { routeTree } from "./routeTree.gen";
 
 const queryClient = new QueryClient();
+const router = createRouter({ routeTree });
 
 function App() {
   return (
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <Outlet />
+        <RouterProvider router={router} />
       </QueryClientProvider>
     </StrictMode>
   );

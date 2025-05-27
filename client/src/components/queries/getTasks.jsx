@@ -5,10 +5,13 @@ export async function getTasks({ page = 1, pageSize = 20, project } = {}) {
 
   const filters = [
     `filters[task_status][title][$eq]=Backlog`,
-    `filters[project][title][$eq]=${encodeURIComponent(project)}`,
     `pagination[page]=${page}`,
     `pagination[pageSize]=${pageSize}`,
   ];
+
+  if (project) {
+    filters.push(`filters[project][title][$eq]=${encodeURIComponent(project)}`);
+  }
 
   const urlString = `${base}&${filters.join("&")}`;
   console.log("Fetching tasks from:", urlString);

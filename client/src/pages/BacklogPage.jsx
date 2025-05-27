@@ -1,41 +1,45 @@
 import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { PaginatedBacklog } from "../components/PaginatedBacklog.jsx";
-
-const projects = ["PGM3", "PGM4", "AtWork 2"];
+import { getProjects } from "../components/queries/getProjects.jsx";
 
 function BacklogPage() {
-  const [selectedProject, setSelectedProject] = useState("");
+  const [selectedProjectId, setSelectedProjectId] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const { data: projectsResponse, isLoading: projectsLoading } = useQuery({
+    queryKey: ["projects"],
+    queryFn: getProjects,
+  });
+
+  const projects = projectsResponse?.data || [];
 
   useEffect(() => {
     setLoading(true);
     const timer = setTimeout(() => setLoading(false), 1500);
     return () => clearTimeout(timer);
-  }, [selectedProject]);
+  }, [selectedProjectId]);
 
   let content;
-  if (loading) {
-    if (selectedProject) {
-      content = (
-        <div
-          className="skeleton-block"
-          style={{ minHeight: "30rem", width: "100dvh" }}
-        ></div>
-      );
-    } else {
-      content = projects.map((_, idx) => (
-        <div
-          key={idx}
-          className="skeleton-block"
-          style={{ minHeight: "30rem", width: "100dvh" }}
-        ></div>
-      ));
-    }
-  } else if (selectedProject) {
-    content = <PaginatedBacklog project={selectedProject} />;
+  if (loading || projectsLoading) {
+    content = (
+      <div
+        className="skeleton-block"
+        style={{ minHeight: "30rem", width: "100dvh" }}
+      ></div>
+    );
+  } else if (selectedProjectId) {
+    const selectedProject = projects.find(
+      (p) => String(p.id) === String(selectedProjectId)
+    );
+    content = selectedProject ? (
+      <PaginatedBacklog project={selectedProject} />
+    ) : (
+      <div>Project niet gevonden.</div>
+    );
   } else {
     content = projects.map((project) => (
-      <PaginatedBacklog key={project} project={project} />
+      <PaginatedBacklog key={project.id} project={project} />
     ));
   }
 
@@ -44,13 +48,14 @@ function BacklogPage() {
       <div className="select select-project">
         <select
           className="select-dropdown"
-          value={selectedProject}
-          onChange={(e) => setSelectedProject(e.target.value)}
+          value={selectedProjectId}
+          onChange={(e) => setSelectedProjectId(e.target.value)}
+          disabled={projectsLoading}
         >
           <option value="">Alle projecten</option>
           {projects.map((project) => (
-            <option key={project} value={project}>
-              {project}
+            <option key={project.id} value={project.id}>
+              {project.title}
             </option>
           ))}
         </select>

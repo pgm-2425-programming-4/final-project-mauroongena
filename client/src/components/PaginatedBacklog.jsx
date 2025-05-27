@@ -7,10 +7,11 @@ import { Pagination } from "./Pagination";
 export function PaginatedBacklog({ project }) {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const projectTitle = project?.title;
 
   const { isPending, isError, data, error } = useQuery({
-    queryKey: ["tasks", page, pageSize, project],
-    queryFn: () => getTasks({ page, pageSize, project }),
+    queryKey: ["tasks", page, pageSize, projectTitle],
+    queryFn: () => getTasks({ page, pageSize, project: projectTitle }),
     keepPreviousData: true,
   });
 
@@ -26,7 +27,7 @@ export function PaginatedBacklog({ project }) {
 
   return (
     <div className="paginated-backlog">
-      <h2>{project}</h2>
+      <h2>{projectTitle || "Alle projecten"}</h2>
       <Backlog tasks={tasks} />
       <Pagination
         currentPage={meta.page}
