@@ -1,0 +1,19 @@
+import { API_URL, API_TOKEN } from "../../constants/constants.js";
+
+export async function getTaskLabels() {
+  const url = `${API_URL}/task-labels`;
+  const result = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${API_TOKEN}`,
+    },
+  });
+
+  if (!result.ok) {
+    throw new Error("Failed to fetch task labels");
+  }
+
+  const data = await result.json();
+  return data;
+}

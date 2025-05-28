@@ -1,5 +1,8 @@
 #root {
   padding: 2rem 0;
+  display: flex;
+  justify-content: start !important;
+  flex-direction: column;
 }
 
 table {
@@ -63,4 +66,101 @@ td {
   justify-content: center;
   align-items: center;
   gap: 1rem;
+}
+
+.main-layout {
+  display: grid;
+  grid-template-columns: 20% 80%;
+}
+
+.projects-tab {
+  height: 100dvh;
+  border-right: 2px solid white;
+  padding: 0 2rem;
+  color: #fff;
+}
+
+.projects-tab h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.projects-tab ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.projects-tab li {
+  margin-bottom: 1rem;
+  padding: 0.5rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.projects-tab li:hover {
+  background: #d6d6d6;
+  color: #121212;
+}
+
+.main-content {
+  flex: 1;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.projects-tab__title {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #bdbdbdbc;
+}
+
+.filter-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+}
+
+.active-project {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.filter-bar {
+  padding: 1rem;
+  border-radius: .5rem;
+  border: 1px solid white;
+}
+
+.task-columns {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+.task-column {
+  background: #ededed;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  min-width: 200px;
+}
+.task-column h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
 }
