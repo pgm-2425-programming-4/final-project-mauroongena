@@ -145,7 +145,7 @@ td {
 
 .filter-bar {
   padding: 1rem;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   border: 1px solid white;
 }
 
@@ -154,13 +154,53 @@ td {
   gap: 2rem;
   align-items: flex-start;
 }
+
 .task-column {
-  background: #ededed;
   border-radius: 0.5rem;
   padding: 1rem;
   min-width: 200px;
 }
+
 .task-column h3 {
   margin-top: 0;
   margin-bottom: 1rem;
+}
+
+.task {
+  background-color: #fff;
+  color: #121212;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 20rem;
+  height: 15rem;
+  max-height: 20rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.task__title {
+  font-weight: bold;
+}
+
+.task-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.task-label {
+  background-color: #121212;
+  color: #ffffff;
+  padding: 0.2rem .5rem;
+  border-radius: 0.3rem;
+}
+
+.selected-project {
+  background: #fff;
+  color: #121212 !important;
+  border-radius: 4px;
 }

@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { getProjects } from "../../queries/getProjects";
+import { getProjects } from "../../components/queries/getProjects";
 
 export const Route = createFileRoute("/projects/$taskByProject")({
   loader: async ({ params }) => {

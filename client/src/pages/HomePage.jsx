@@ -1,8 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
 import { getProjects } from "../components/queries/getProjects.jsx";
 import { getTaskLabels } from "../components/queries/getTaskLabels.jsx";
 import { getAllTasks } from "../components/queries/getAllTasks.jsx";
+import { getTaskStatuses } from "../components/queries/getTaskStatuses.jsx";
 
 function HomePage() {
   const { data: projectsResponse, isLoading: projectsLoading } = useQuery({
@@ -23,13 +25,31 @@ function HomePage() {
   });
   const tasks = tasksResponse?.data || [];
 
-  console.log("Tasks:", tasks);
-  const tasksByStatus = tasks.reduce((acc, task) => {
-    const status =
-      task.task_status?.title ||
-      task.task_status ||
-      "Onbekend";
-    if (!acc[status]) acc[status] = [];
+  const { data: statusResponse, isLoading: statusLoading } = useQuery({
+    queryKey: ["taskStatuses"],
+    queryFn: getTaskStatuses,
+  });
+  const taskStatuses = statusResponse?.data || [];
+
+  const [selectedProjectId, setSelectedProjectId] = useState("");
+
+  useEffect(() => {
+    if (projects.length > 0 && !selectedProjectId) {
+      setSelectedProjectId(projects[0].id);
+    }
+  }, [projects, selectedProjectId]);
+
+  const filteredTasks = tasks.filter(
+    (task) => String(task.project?.id) === String(selectedProjectId)
+  );
+
+  const tasksByStatus = filteredTasks.reduce((acc, task) => {
+    const status = task.task_status?.title;
+
+    if (!acc[status]) {
+      acc[status] = [];
+    }
+
     acc[status].push(task);
     return acc;
   }, {});
@@ -43,7 +63,16 @@ function HomePage() {
         ) : (
           <ul>
             {projects.map((project) => (
-              <li key={project.id}>{project.title}</li>
+              <li
+                key={project.id}
+                onClick={() => setSelectedProjectId(project.id)}
+                className={
+                  selectedProjectId === project.id ? "selected-project" : ""
+                }
+                style={{ cursor: "pointer" }}
+              >
+                {project.title}
+              </li>
             ))}
           </ul>
         )}
@@ -78,7 +107,9 @@ function HomePage() {
           <div className="active-project">
             <div className="active-project__title">
               <span className="active-project__label">Active Project: </span>
-              <span className="active-project__name">Project Name</span>
+              <span className="active-project__name">
+                {projects.find((p) => p.id === selectedProjectId)?.title || ""}
+              </span>
             </div>
             <button className="button is-primary is-outlined">
               Add new task
@@ -92,20 +123,44 @@ function HomePage() {
         </div>
 
         <div className="task-list">
-          {tasksLoading ? (
+          {tasksLoading || statusLoading ? (
             <div>Loading tasks...</div>
           ) : (
             <div className="task-columns">
-              {Object.entries(tasksByStatus).map(([status, tasks]) => (
-                <div key={status} className="task-column">
-                  <h3>{status}</h3>
-                  <ul>
-                    {tasks.map((task) => (
-                      <li key={task.id}>{task.title}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+              {taskStatuses.map((status) => {
+                const statusTitle = status.title || status?.title;
+
+                if (statusTitle === "Backlog") return null;
+
+                const tasksForStatus = tasksByStatus[statusTitle] || [];
+
+                return (
+                  <div key={statusTitle} className="task-column">
+                    <h3>{statusTitle}</h3>
+                    <ul>
+                      {tasksForStatus.length > 0 ? (
+                        tasksForStatus.map((task) => (
+                          <li className="task" key={task.id}>
+                            <span className="task__title">{task.title}</span>
+                            <span className="task__description">
+                              {task.description}
+                            </span>
+                            <span className="task-labels">
+                              {task.task_labels.map((label) => (
+                                <span key={label.id} className="task-label">
+                                  {label.title}
+                                </span>
+                              ))}
+                            </span>
+                          </li>
+                        ))
+                      ) : (
+                        <li style={{ color: "#fff" }}>No tasks added yet.</li>
+                      )}
+                    </ul>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
