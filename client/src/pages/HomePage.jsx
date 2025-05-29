@@ -5,6 +5,9 @@ import { getProjects } from "../components/queries/getProjects.jsx";
 import { getTaskLabels } from "../components/queries/getTaskLabels.jsx";
 import { getAllTasks } from "../components/queries/getAllTasks.jsx";
 import { getTaskStatuses } from "../components/queries/getTaskStatuses.jsx";
+import ProjectsTab from "../components/ProjectsTab";
+import FilterBar from "../components/FilterBar";
+import TaskColumns from "../components/TaskColumns";
 
 function HomePage() {
   const { data: projectsResponse, isLoading: projectsLoading } = useQuery({
@@ -32,6 +35,7 @@ function HomePage() {
   const taskStatuses = statusResponse?.data || [];
 
   const [selectedProjectId, setSelectedProjectId] = useState("");
+  const [selectedLabel, setSelectedLabel] = useState("all");
 
   useEffect(() => {
     if (projects.length > 0 && !selectedProjectId) {
@@ -39,9 +43,14 @@ function HomePage() {
     }
   }, [projects, selectedProjectId]);
 
-  const filteredTasks = tasks.filter(
-    (task) => String(task.project?.id) === String(selectedProjectId)
-  );
+  const filteredTasks = tasks.filter((task) => {
+    const inProject = String(task.project?.id) === String(selectedProjectId);
+    const hasLabel =
+      selectedLabel === "all" ||
+      (task.task_labels &&
+        task.task_labels.some((label) => label.title === selectedLabel));
+    return inProject && hasLabel;
+  });
 
   const tasksByStatus = filteredTasks.reduce((acc, task) => {
     const status = task.task_status?.title;
@@ -56,112 +65,30 @@ function HomePage() {
 
   return (
     <div className="main-layout">
-      <aside className="projects-tab">
-        <h2 className="projects-tab__title">Projects</h2>
-        {projectsLoading ? (
-          <div>Loading...</div>
-        ) : (
-          <ul>
-            {projects.map((project) => (
-              <li
-                key={project.id}
-                onClick={() => setSelectedProjectId(project.id)}
-                className={
-                  selectedProjectId === project.id ? "selected-project" : ""
-                }
-                style={{ cursor: "pointer" }}
-              >
-                {project.title}
-              </li>
-            ))}
-          </ul>
-        )}
-      </aside>
+      <ProjectsTab
+        projects={projects}
+        projectsLoading={projectsLoading}
+        selectedProjectId={selectedProjectId}
+        setSelectedProjectId={setSelectedProjectId}
+      />
       <section className="main-content">
-        <div className="filter-bar">
-          <form className="filters">
-            <div className="filter-bar__task-label select">
-              <select
-                className="select-dropdown"
-                name="task-select"
-                id="task-select"
-              >
-                <option value="all">All tasks</option>
-                {labelsLoading ? (
-                  <option disabled>Loading...</option>
-                ) : (
-                  taskLabels.map((label) => (
-                    <option key={label.id} value={label.title}>
-                      {label.title}
-                    </option>
-                  ))
-                )}
-              </select>
-            </div>
-            <input
-              className="input"
-              type="text"
-              placeholder="Search by description..."
-            />
-          </form>
-          <div className="active-project">
-            <div className="active-project__title">
-              <span className="active-project__label">Active Project: </span>
-              <span className="active-project__name">
-                {projects.find((p) => p.id === selectedProjectId)?.title || ""}
-              </span>
-            </div>
-            <button className="button is-primary is-outlined">
-              Add new task
-            </button>
-          </div>
-          <div className="backlogpage">
-            <Link to="/backlog" className="backlogpage__link button is-link">
-              Backlog
-            </Link>
-          </div>
-        </div>
-
+        <FilterBar
+          taskLabels={taskLabels}
+          labelsLoading={labelsLoading}
+          projects={projects}
+          selectedProjectId={selectedProjectId}
+          setSelectedProjectId={setSelectedProjectId}
+          selectedLabel={selectedLabel}
+          setSelectedLabel={setSelectedLabel}
+        />
         <div className="task-list">
           {tasksLoading || statusLoading ? (
             <div>Loading tasks...</div>
           ) : (
-            <div className="task-columns">
-              {taskStatuses.map((status) => {
-                const statusTitle = status.title || status?.title;
-
-                if (statusTitle === "Backlog") return null;
-
-                const tasksForStatus = tasksByStatus[statusTitle] || [];
-
-                return (
-                  <div key={statusTitle} className="task-column">
-                    <h3>{statusTitle}</h3>
-                    <ul>
-                      {tasksForStatus.length > 0 ? (
-                        tasksForStatus.map((task) => (
-                          <li className="task" key={task.id}>
-                            <span className="task__title">{task.title}</span>
-                            <span className="task__description">
-                              {task.description}
-                            </span>
-                            <span className="task-labels">
-                              {task.task_labels.map((label) => (
-                                <span key={label.id} className="task-label">
-                                  {label.title}
-                                </span>
-                              ))}
-                            </span>
-                          </li>
-                        ))
-                      ) : (
-                        <li style={{ color: "#fff" }}>No tasks added yet.</li>
-                      )}
-                    </ul>
-                  </div>
-                );
-              })}
-            </div>
+            <TaskColumns
+              taskStatuses={taskStatuses}
+              tasksByStatus={tasksByStatus}
+            />
           )}
         </div>
       </section>
