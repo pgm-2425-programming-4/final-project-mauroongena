@@ -7,6 +7,8 @@ function FilterBar({
   selectedProjectId,
   selectedLabel,
   setSelectedLabel,
+  searchTerm,
+  setSearchTerm,
 }) {
   return (
     <div className="filter-bar">
@@ -35,6 +37,8 @@ function FilterBar({
           className="input"
           type="text"
           placeholder="Search by description..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </form>
       <div className="active-project">

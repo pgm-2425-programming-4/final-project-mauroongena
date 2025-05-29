@@ -36,6 +36,7 @@ function HomePage() {
 
   const [selectedProjectId, setSelectedProjectId] = useState("");
   const [selectedLabel, setSelectedLabel] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     if (projects.length > 0 && !selectedProjectId) {
@@ -48,20 +49,22 @@ function HomePage() {
     const hasLabel =
       selectedLabel === "all" ||
       (task.task_labels &&
-        task.task_labels.some((label) => label.title === selectedLabel));
-    return inProject && hasLabel;
+        task.task_labels.find((label) => label.title === selectedLabel));
+    const matchesSearch =
+      searchTerm === "" ||
+      (task.description &&
+        task.description.toLowerCase().includes(searchTerm.toLowerCase()));
+    return inProject && hasLabel && matchesSearch;
   });
 
-  const tasksByStatus = filteredTasks.reduce((acc, task) => {
+  const tasksByStatus = {};
+  filteredTasks.forEach((task) => {
     const status = task.task_status?.title;
-
-    if (!acc[status]) {
-      acc[status] = [];
+    if (!tasksByStatus[status]) {
+      tasksByStatus[status] = [];
     }
-
-    acc[status].push(task);
-    return acc;
-  }, {});
+    tasksByStatus[status].push(task);
+  });
 
   return (
     <div className="main-layout">
@@ -80,6 +83,8 @@ function HomePage() {
           setSelectedProjectId={setSelectedProjectId}
           selectedLabel={selectedLabel}
           setSelectedLabel={setSelectedLabel}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
         />
         <div className="task-list">
           {tasksLoading || statusLoading ? (
