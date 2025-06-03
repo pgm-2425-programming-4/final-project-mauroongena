@@ -9,6 +9,7 @@ function FilterBar({
   setSelectedLabel,
   searchTerm,
   setSearchTerm,
+  onAddTask,
 }) {
   return (
     <div className="filter-bar">
@@ -48,7 +49,16 @@ function FilterBar({
             {projects.find((p) => p.id === selectedProjectId)?.title || ""}
           </span>
         </div>
-        <button className="button is-primary is-outlined">Add new task</button>
+        <button
+          className="button is-primary is-outlined"
+          type="button"
+          onClick={() => {
+            console.log("Knop geklikt");
+            onAddTask();
+          }}
+        >
+          Add new task
+        </button>
       </div>
       <div className="backlogpage">
         <Link to="/backlog" className="backlogpage__link button is-link">

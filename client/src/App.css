@@ -195,7 +195,7 @@ td {
 .task-label {
   background-color: #121212;
   color: #ffffff;
-  padding: 0.2rem .5rem;
+  padding: 0.2rem 0.5rem;
   border-radius: 0.3rem;
 }
 
@@ -203,4 +203,60 @@ td {
   background: #fff;
   color: #121212 !important;
   border-radius: 4px;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  min-width: 320px;
+  max-width: 90vw;
+  z-index: 1001;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+
+.modal-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.add-task-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.add-task-title {
+  grid-column: 1 / -1;
+  margin-bottom: 1.5rem;
+}
+
+.add-task-row {
+  display: flex !important;
+  gap: 1rem !important;
+  align-items: center !important;
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.select-label {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-select {
+  display: flex;
+  flex-direction: column;
 }

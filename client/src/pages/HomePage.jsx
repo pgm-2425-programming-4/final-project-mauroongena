@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { getProjects } from "../components/queries/getProjects.jsx";
 import { getTaskLabels } from "../components/queries/getTaskLabels.jsx";
@@ -8,8 +8,12 @@ import { getTaskStatuses } from "../components/queries/getTaskStatuses.jsx";
 import ProjectsTab from "../components/ProjectsTab";
 import FilterBar from "../components/FilterBar";
 import TaskColumns from "../components/TaskColumns";
+import AddTask from "../components/AddTask";
+import { postTask } from "../components/queries/postTask.jsx";
 
 function HomePage() {
+  const queryClient = useQueryClient();
+
   const { data: projectsResponse, isLoading: projectsLoading } = useQuery({
     queryKey: ["projects"],
     queryFn: getProjects,
@@ -37,6 +41,7 @@ function HomePage() {
   const [selectedProjectId, setSelectedProjectId] = useState("");
   const [selectedLabel, setSelectedLabel] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
+  const [showAddTask, setShowAddTask] = useState(false);
 
   useEffect(() => {
     if (projects.length > 0 && !selectedProjectId) {
@@ -66,6 +71,17 @@ function HomePage() {
     tasksByStatus[status].push(task);
   });
 
+  const handleAddTask = async (taskData) => {
+    try {
+      console.log("TaskData die naar backend gaat:", taskData);
+      await postTask(taskData);
+      await queryClient.invalidateQueries(["allTasks"]);
+    } catch (error) {
+      alert("Fout bij toevoegen van taak.");
+      console.error(error);
+    }
+  };
+
   return (
     <div className="main-layout">
       <ProjectsTab
@@ -85,6 +101,16 @@ function HomePage() {
           setSelectedLabel={setSelectedLabel}
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
+          onAddTask={() => setShowAddTask(true)}
+        />
+        <AddTask
+          isOpen={showAddTask}
+          onClose={() => setShowAddTask(false)}
+          onAdd={handleAddTask}
+          projects={projects}
+          selectedProjectId={selectedProjectId}
+          taskStatuses={taskStatuses}
+          taskLabels={taskLabels}
         />
         <div className="task-list">
           {tasksLoading || statusLoading ? (
