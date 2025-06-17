@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getTaskStatuses } from "../../../queries/get-task-statuses";
 import { getTasksByProject } from "../../../queries/get-tasks-by-project";
 import AddTask from "../../../components/AddTask";
@@ -8,34 +9,56 @@ import TaskColumns from "../../../components/TaskColumns";
 import FilterBar from "../../../components/FilterBar";
 
 export const Route = createFileRoute("/projects/$projectId/")({
-  loader: async ({ params }) => {
-    const projectId = params.projectId;
-    const statusesData = await getTaskStatuses();
-    const tasksData = await getTasksByProject(projectId);
-    return {
-      taskStatuses: statusesData.data,
-      tasks: tasksData.data,
-      projectId,
-    };
-  },
   component: ProjectPage,
 });
 
 function ProjectPage() {
-  const { taskStatuses, tasks, projectId } = Route.useLoaderData();
+  const { projectId } = Route.useParams();
 
   const [selectedLabel, setSelectedLabel] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddTask, setShowAddTask] = useState(false);
 
+  const queryClient = useQueryClient();
+
+  const { data: statusData } = useQuery({
+    queryKey: ["taskStatuses"],
+    queryFn: getTaskStatuses,
+  });
+
+  const {
+    data: taskData,
+    isLoading: tasksLoading,
+  } = useQuery({
+    queryKey: ["tasks", projectId, selectedLabel],
+    queryFn: () => getTasksByProject(projectId, selectedLabel),
+  });
+
+  const taskStatuses = statusData?.data || [];
+  const tasks = taskData?.data || [];
+
+  const filteredTasks = tasks.filter((task) => {
+    const matchesSearch =
+      task.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      task.title.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesSearch;
+  });
+
+  const allLabels = [];
+  tasks.forEach((task) => {
+    (task.task_labels || []).forEach((label) => {
+      if (!allLabels.find((lab) => lab.id === label.id)) {
+        allLabels.push(label);
+      }
+    });
+  });
+
   const projects = [];
   tasks.forEach((task) => {
-    if (
-      task.project &&
-      !projects.find((p) => p.id === task.project.id)
-    ) {
+    const docId = task.project?.documentId;
+    if (docId && !projects.find((p) => p.id === docId)) {
       projects.push({
-        id: task.project.id,
+        id: docId,
         title: task.project.title,
       });
     }
@@ -50,38 +73,6 @@ function ProjectPage() {
 
   const selectedProject = projects.find((p) => String(p.id) === String(projectId)) || projects[0];
 
-  const filteredTasks = tasks.filter((task) => {
-    const matchesLabel =
-      selectedLabel === "all" ||
-      task.task_labels.some((label) => label.title === selectedLabel);
-
-    const matchesSearch =
-      task.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      task.title.toLowerCase().includes(searchTerm.toLowerCase());
-
-    return matchesLabel && matchesSearch;
-  });
-
-  const tasksByStatus = {};
-  for (const task of filteredTasks) {
-    const statusTitle = task.task_status?.title || "Unknown";
-    if (!tasksByStatus[statusTitle]) {
-      tasksByStatus[statusTitle] = [];
-    }
-    tasksByStatus[statusTitle].push(task);
-  }
-
-  const allLabels = [];
-  tasks.forEach((task) => {
-    task.task_labels.forEach((label) => {
-      if (!allLabels.find((lab) => lab.id === label.id)) {
-        allLabels.push(label);
-      }
-    });
-  });
-
-  const labelsLoading = false;
-
   function handleAddTask() {
     setShowAddTask(true);
   }
@@ -89,8 +80,8 @@ function ProjectPage() {
   async function handleTaskAdd(newTask) {
     try {
       await postTask(newTask);
+      await queryClient.invalidateQueries(["tasks"]);
       setShowAddTask(false);
-      window.location.reload();
     } catch (error) {
       alert("Failed to add task: " + error.message);
     }
@@ -100,11 +91,15 @@ function ProjectPage() {
     setShowAddTask(false);
   }
 
+  const handleTaskSaved = async () => {
+    await queryClient.invalidateQueries(["tasks", projectId, selectedLabel]);
+  };
+
   return (
     <div>
       <FilterBar
         taskLabels={allLabels}
-        labelsLoading={labelsLoading}
+        labelsLoading={tasksLoading}
         projects={projects}
         selectedProjectId={selectedProject.id}
         selectedLabel={selectedLabel}
@@ -113,11 +108,16 @@ function ProjectPage() {
         setSearchTerm={setSearchTerm}
         onAddTask={handleAddTask}
       />
-      <TaskColumns 
-      taskStatuses={taskStatuses}
-      taskLabels={allLabels}
-      tasksByStatus={tasksByStatus} 
-      projectId={projectId} />
+
+      <TaskColumns
+        taskStatuses={taskStatuses}
+        taskLabels={allLabels}
+        tasks={filteredTasks}
+        projectId={projectId}
+        selectedLabel={selectedLabel}
+        onTaskSaved={handleTaskSaved}
+      />
+
       <AddTask
         isOpen={showAddTask}
         onClose={handleCloseAddTask}
