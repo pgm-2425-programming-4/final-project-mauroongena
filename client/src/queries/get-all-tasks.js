@@ -1,4 +1,4 @@
-import { API_URL, API_TOKEN } from "../../constants/constants.js";
+import { API_URL, API_TOKEN } from "../constants/constants.js";
 
 export async function getAllTasks() {
   const url = `${API_URL}/tasks?populate=*&filters[task_status][title][$ne]=Backlog`;

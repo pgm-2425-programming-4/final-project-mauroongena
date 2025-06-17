@@ -78,11 +78,22 @@ function AddTask({
       <form
         className="add-task-form"
         onSubmit={handleSubmit}
-        style={{ padding: "2rem" }}
+        style={{
+          padding: "2rem",
+          display: "flex",
+          flexDirection: "column",
+          gap: "1.5rem",
+          height: "100%",
+        }}
       >
-        <h2 className="add-task-title">Add new task</h2>
-        <div className="add-task-row">
-          <label>
+        <h2
+          className="add-task-title"
+          style={{ gridColumn: "1 / -1", marginBottom: "1rem" }}
+        >
+          Add new task
+        </h2>
+        <div className="add-task-row" style={{ width: "100%"}}>
+          <label style={{ width: "100%" }}>
             Title:
             <input
               className="input add-task__title"
@@ -90,29 +101,45 @@ function AddTask({
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              style={{ width: "100%", backgroundColor: "#374357", marginTop: "0.5rem",}}
             />
           </label>
         </div>
-        <div className="add-task-row">
-          <label>
-            Description:
-            <textarea
-              className="textarea"
-              required
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
+        <div
+          className="add-task-row"
+          style={{
+            display: "flex",
+            gap: "1rem",
+            width: "100%",
+          }}
+        >
+          <label className="project-select" style={{ flex: 1 }}>
+            Project:
+            <div className="select" style={{marginTop: "0.5rem"}}>
+              <select
+                className="select-dropdown"
+                disabled
+                value={projectId}
+                onChange={(e) => setProjectId(e.target.value)}
+                style={{ width: "100%", backgroundColor: "#374357"}}
+              >
+                {projects.map((project) => (
+                  <option key={project.id} value={project.id}>
+                    {project.title}
+                  </option>
+                ))}
+              </select>
+            </div>
           </label>
-        </div>
-        <div className="add-task-row">
-          <label className="select-label">
+          <label className="select-label" style={{ flex: 1 }}>
             Status:
-            <div className="select">
+            <div className="select" style={{marginTop: "0.5rem"}}>
               <select
                 className="select-dropdown"
                 required
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
+                style={{ width: "100%", backgroundColor: "#374357"}}
               >
                 <option value="">Select status</option>
                 {taskStatuses.map((s) => (
@@ -124,8 +151,26 @@ function AddTask({
             </div>
           </label>
         </div>
-        <div className="add-task-row">
-          <label>
+        <div
+          className="add-task-row"
+          style={{
+            display: "flex",
+            gap: "1rem",
+            width: "100%",
+            alignItems: "flex-start", 
+          }}
+        >
+          <label style={{ flex: 1 }}>
+            Description:
+            <textarea
+              className="textarea"
+              required
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              style={{ width: "100%", backgroundColor: "#374357", height: "200px", marginTop: "0.5rem", }}
+            />
+          </label>
+          <label style={{ flex: 1 }}>
             Labels:
             <div
               style={{
@@ -134,6 +179,9 @@ function AddTask({
                 flexWrap: "wrap",
                 gap: "0.5rem",
                 marginTop: "0.5rem",
+                backgroundColor: "#374357",
+                borderRadius: "4px",
+                padding: "0.5rem"
               }}
             >
               {taskLabels.map((label) => (
@@ -177,28 +225,15 @@ function AddTask({
             )}
           </label>
         </div>
-        <div className="add-task-row">
-          <label className="project-select">
-            Project:
-            <div className="select">
-              <select
-                className="select-dropdown"
-                required
-                value={projectId}
-                onChange={(e) => setProjectId(e.target.value)}
-              >
-                {projects.map((project) => (
-                  <option key={project.id} value={project.id}>
-                    {project.title}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </label>
-        </div>
-
-        <div style={{ marginTop: 16, display: "flex", gap: 8 }}>
-          <button type="submit" className="button is-primary">
+        <div
+          style={{
+            marginTop: "auto",
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: 8,
+          }}
+        >
+          <button type="submit" className="button" style = {{ backgroundColor: "#4d648d" }}>
             Add
           </button>
           <button type="button" className="button" onClick={handleCancel}>

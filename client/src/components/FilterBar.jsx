@@ -21,6 +21,7 @@ function FilterBar({
             id="task-select"
             value={selectedLabel}
             onChange={(e) => setSelectedLabel(e.target.value)}
+            style={{backgroundColor: "#374357"}}
           >
             <option value="all">All tasks</option>
             {labelsLoading ? (
@@ -37,9 +38,10 @@ function FilterBar({
         <input
           className="input"
           type="text"
-          placeholder="Search by description..."
+          placeholder="Search by description..."  
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          style={{backgroundColor: "#374357"}}
         />
       </form>
       <div className="active-project">
@@ -59,12 +61,18 @@ function FilterBar({
         >
           Add new task
         </button>
-      </div>
-      <div className="backlogpage">
-        <Link to="/backlog" className="backlogpage__link button is-link">
+        <div className="backlogpage">
+        <Link
+          to='/projects/$projectId/backlog'
+          params={{ documentId: selectedProjectId }}
+          className="backlogpage__link button is-link"
+          onClick={console.log("selectedProjectId in FilterBar:", selectedProjectId)}
+        >
           Backlog
         </Link>
       </div>
+      </div>
+
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { API_URL, API_TOKEN } from "../../constants/constants.js";
+import { API_URL, API_TOKEN } from "../constants/constants.js";
 
 export async function getTasks({ page = 1, pageSize = 20, project } = {}) {
   const base = `${API_URL}/tasks?populate=*`;
@@ -8,9 +8,9 @@ export async function getTasks({ page = 1, pageSize = 20, project } = {}) {
     `pagination[page]=${page}`,
     `pagination[pageSize]=${pageSize}`,
   ];
-
+  
   if (project) {
-    filters.push(`filters[project][title][$eq]=${encodeURIComponent(project)}`);
+    filters.push(`filters[project][id][$eq]=${project}`);
   }
 
   const urlString = `${base}&${filters.join("&")}`;
