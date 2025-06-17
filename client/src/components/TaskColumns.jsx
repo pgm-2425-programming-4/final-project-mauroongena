@@ -1,50 +1,24 @@
-import { useEffect, useState } from "react";
 import TaskItem from "./TaskItem";
-import { getTasksByProject } from "../queries/get-tasks-by-project";
 
-function TaskColumns({ taskStatuses, taskLabels, projectId }) {
-  const [tasksByStatus, setTasksByStatus] = useState({});
+function TaskColumns({ taskStatuses, taskLabels, tasks, projectId, selectedLabel, onTaskSaved }) {
+  const tasksByStatus = {};
 
-  const fetchTasks = async () => {
-    try {
-      const response = await getTasksByProject(projectId);
-      const rawTasks = response.data || [];
-
-      const grouped = {};
-
-      for (let task of rawTasks) {
-        const status = task.task_status;
-        const statusTitle = status?.title;
-
-        if (!statusTitle || statusTitle === "Backlog") continue;
-
-        if (!grouped[statusTitle]) grouped[statusTitle] = [];
-        grouped[statusTitle].push(task);
-      }
-
-      setTasksByStatus(grouped);
-    } catch (err) {
-      console.error("Error fetching project-specific tasks:", err);
-    }
-  };
-
-  useEffect(() => {
-    if (projectId) {
-      fetchTasks();
-    }
-  }, [projectId]);
+  for (const task of tasks) {
+    const statusTitle = task.task_status?.title || "Unknown";
+    if (statusTitle === "Backlog") continue;
+    if (!tasksByStatus[statusTitle]) tasksByStatus[statusTitle] = [];
+    tasksByStatus[statusTitle].push(task);
+  }
 
   return (
     <div className="task-columns">
       {taskStatuses.map((status) => {
-        const statusTitle = status.title;
-        if (statusTitle === "Backlog") return null;
-
-        const tasksForStatus = tasksByStatus[statusTitle] || [];
+        if (status.title === "Backlog") return null;
+        const tasksForStatus = tasksByStatus[status.title] || [];
 
         return (
-          <div key={statusTitle} className="task-column">
-            <h3>{statusTitle}</h3>
+          <div key={status.title} className="task-column">
+            <h3>{status.title}</h3>
             <ul className="task-column__list">
               {tasksForStatus.length > 0 ? (
                 tasksForStatus.map((task) => (
@@ -53,7 +27,9 @@ function TaskColumns({ taskStatuses, taskLabels, projectId }) {
                     task={task}
                     taskLabels={taskLabels}
                     taskStatuses={taskStatuses}
-                    onSaveSuccess={fetchTasks}
+                    projectId={projectId}
+                    selectedLabel={selectedLabel}
+                    onSaveSuccess={onTaskSaved}
                   />
                 ))
               ) : (

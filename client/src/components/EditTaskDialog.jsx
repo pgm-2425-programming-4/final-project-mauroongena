@@ -9,6 +9,7 @@ function EditTaskDialog({ task, taskStatuses, taskLabels = [], onClose, onSaveSu
     task_labels: [],
   });
 
+  const [labelError, setLabelError] = useState("");
   const { mutate: updateTask, isPending } = useUpdateTask();
 
   useEffect(() => {
@@ -16,8 +17,8 @@ function EditTaskDialog({ task, taskStatuses, taskLabels = [], onClose, onSaveSu
       setFormData({
         title: task.title,
         description: task.description,
-        task_status: task.task_status?.id || "",
-        task_labels: task.task_labels?.map((label) => label.id) || [],
+        task_status: task.task_status.id || "",
+        task_labels: task.task_labels.map((label) => label.id) || [],
       });
     }
   }, [task]);
@@ -27,15 +28,33 @@ function EditTaskDialog({ task, taskStatuses, taskLabels = [], onClose, onSaveSu
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleLabelsChange = (e) => {
-    const selectedOptions = Array.from(e.target.selectedOptions, (option) =>
-      Number(option.value)
-    );
-    setFormData((prev) => ({ ...prev, task_labels: selectedOptions }));
+  const handleCheckboxChange = (e, labelId) => {
+    const checked = e.target.checked;
+    setFormData((prev) => {
+      const updatedLabels = checked
+        ? [...prev.task_labels, labelId]
+        : prev.task_labels.filter((id) => id !== labelId);
+
+      if (updatedLabels.length === 0) {
+        setLabelError("Selecteer minstens één label!");
+      } else {
+        setLabelError("");
+      }
+
+      return {
+        ...prev,
+        task_labels: updatedLabels,
+      };
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (formData.task_labels.length === 0) {
+      setLabelError("Selecteer minstens één label!");
+      return;
+    }
 
     const payload = {
       documentId: task.documentId,
@@ -84,18 +103,20 @@ function EditTaskDialog({ task, taskStatuses, taskLabels = [], onClose, onSaveSu
 
           <label>
             Labels:
-            <select
-              name="task_labels"
-              value={formData.task_labels}
-              onChange={handleLabelsChange}
-              multiple
-            >
+            <div>
               {taskLabels.map((label) => (
-                <option key={label.id} value={label.id}>
+                <label key={label.id}>
+                  <input
+                    type="checkbox"
+                    value={label.id}
+                    checked={formData.task_labels.includes(label.id)}
+                    onChange={(e) => handleCheckboxChange(e, label.id)}
+                  />
                   {label.title}
-                </option>
+                </label>
               ))}
-            </select>
+            </div>
+            {labelError && <p style={{ color: "red" }}>{labelError}</p>}
           </label>
 
           <label>

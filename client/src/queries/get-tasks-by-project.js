@@ -1,8 +1,15 @@
 import { API_URL, API_TOKEN } from "../constants/constants.js";
 
-export async function getTasksByProject(projectId) {
-  const url = `${API_URL}/tasks?populate=*&filters[task_status][title][$ne]=Backlog&filters[project][documentId][$eq]=${projectId}`;
-  
+export async function getTasksByProject(projectId, selectedLabel = "all") {
+  let url = `${API_URL}/tasks?populate=*`;
+
+  url += `&filters[project][documentId][$eq]=${projectId}`;
+  url += `&filters[task_status][title][$ne]=Backlog`;
+
+  if (selectedLabel && selectedLabel !== "all") {
+    url += `&filters[task_labels][title][$eq]=${encodeURIComponent(selectedLabel)}`;
+  }
+
   const result = await fetch(url, {
     method: "GET",
     headers: {
