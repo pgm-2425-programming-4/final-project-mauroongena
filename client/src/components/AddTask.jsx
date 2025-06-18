@@ -125,7 +125,7 @@ function AddTask({ isOpen, onClose, onAdd, selectedProjectId, taskStatuses = [],
           <div className="form__actions addtask_buttons">
             <div className="action__buttons ">
               <button className="button is-outlined is-info is-dark" type="button" onClick={onClose}>Cancel</button>
-              <button className="button is-link" type="submit">Add</button>
+              <button className="button is-primary" type="submit">Add</button>
             </div>
           </div>
         </form>

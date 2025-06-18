@@ -13,7 +13,6 @@ function EditTaskDialog({ task, taskStatuses, taskLabels = [], onClose, onSaveSu
   const [labelError, setLabelError] = useState("");
   const { mutate: updateTask, isPending } = useUpdateTask();
 
-  // State voor delete confirm popup en deleting status
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -81,8 +80,6 @@ function EditTaskDialog({ task, taskStatuses, taskLabels = [], onClose, onSaveSu
 
   const confirmDelete = async () => {
     setIsDeleting(true);
-
-    // Sluit dialogs direct
     onClose();
     onSaveSuccess?.();
 
@@ -102,78 +99,107 @@ function EditTaskDialog({ task, taskStatuses, taskLabels = [], onClose, onSaveSu
       <div className="edit-dialog-backdrop">
         <div className="edit-dialog">
           <h2 className="dialog__title">Edit Task</h2>
-          <form onSubmit={handleSubmit}>
-            <label>
-              Title:
-              <input
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                required
-              />
-            </label>
+          <form className="form" onSubmit={handleSubmit}>
+            <div className="form__row">
+              <label className="form__label">
+                Title:
+                <input
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  required
+                  className="form__input input"
+                />
+              </label>
+            </div>
 
-            <label>
-              Description:
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                required
-              />
-            </label>
+            <div className="form__row">
+              <label className="form__label">
+                Status:
+                <div className="select">
+                  <select
+                    name="task_status"
+                    value={formData.task_status}
+                    onChange={handleChange}
+                    required
+                    className="form__input"
+                  >
+                    <option value="">-- Select Status --</option>
+                    {taskStatuses.map((status) => (
+                      <option key={status.id} value={status.id}>
+                        {status.title}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </label>
+            </div>
 
-            <label>
-              Labels:
-              <div>
-                {taskLabels.map((label) => (
-                  <label key={label.id}>
-                    <input
-                      type="checkbox"
-                      value={label.id}
-                      checked={formData.task_labels.includes(label.id)}
-                      onChange={(e) => handleCheckboxChange(e, label.id)}
-                    />
-                    {label.title}
-                  </label>
-                ))}
-              </div>
-              {labelError && <p style={{ color: "red" }}>{labelError}</p>}
-            </label>
+            <div className="form__row form__row--full">
+              <label className="form__label">
+                Description:
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  required
+                  className="form__input textarea"
+                />
+              </label>
+            </div>
 
-            <label>
-              Status:
-              <select
-                name="task_status"
-                value={formData.task_status}
-                onChange={handleChange}
-                required
-              >
-                <option value="">-- Select Status --</option>
-                {taskStatuses.map((status) => (
-                  <option key={status.id} value={status.id}>
-                    {status.title}
-                  </option>
-                ))}
-              </select>
-            </label>
+            <div className="form__row form__row--full">
+              <label className="form__label">
+                Labels:
+                <div className="form__checkbox-group">
+                  {taskLabels.map((label) => {
+                    const isChecked = formData.task_labels.includes(label.id);
+                    return (
+                      <label
+                        key={label.id}
+                        className={`form__checkbox-item ${isChecked ? "selected" : ""}`}
+                      >
+                        <input
+                          type="checkbox"
+                          value={label.id}
+                          checked={isChecked}
+                          onChange={(e) => handleCheckboxChange(e, label.id)}
+                        />
+                        {label.title}
+                      </label>
+                    );
+                  })}
+                </div>
+                {labelError && <p style={{ color: "red" }}>{labelError}</p>}
+              </label>
+            </div>
 
-            <div className="form__actions" style={{ display: "flex", justifyContent: "space-between", marginTop: "1rem" }}>
-              <button
-                type="button"
-                onClick={() => setShowDeleteConfirm(true)}
-                disabled={isDeleting}
-                style={{ backgroundColor: "red", color: "white" }}
-              >
-                {isDeleting ? "Deleting..." : "Delete"}
-              </button>
-
-              <div>
-                <button type="submit" disabled={isPending || isDeleting}>
-                  {isPending ? "Saving..." : "Save"}
+            <div className="form__actions addtask_buttons">
+              <div className="action__buttons">
+                <button
+                  className="button is-danger"
+                  type="button"
+                  onClick={() => setShowDeleteConfirm(true)}
+                  disabled={isDeleting}
+                >
+                  {isDeleting ? "Deleting..." : "Delete"}
                 </button>
-                <button type="button" onClick={onClose} disabled={isDeleting}>
+
+                <button
+                  className="button is-outlined is-info is-dark"
+                  type="button"
+                  onClick={onClose}
+                  disabled={isDeleting}
+                >
                   Cancel
+                </button>
+
+                <button
+                  className="button is-primary"
+                  type="submit"
+                  disabled={isPending || isDeleting}
+                >
+                  {isPending ? "Saving..." : "Save"}
                 </button>
               </div>
             </div>
@@ -181,19 +207,27 @@ function EditTaskDialog({ task, taskStatuses, taskLabels = [], onClose, onSaveSu
         </div>
       </div>
 
-      {/* Delete confirmation popup */}
       {showDeleteConfirm && (
         <div className="edit-dialog-backdrop" style={{ zIndex: 1100 }}>
           <div className="edit-dialog" style={{ maxWidth: "400px" }}>
             <p>
-              Are you sure you want to delete task <strong>{task.title}</strong>?
+              Are you sure you want to delete task{" "}
+              <strong>"{task.title}"</strong>?
             </p>
-            <div style={{ display: "flex", justifyContent: "flex-end", gap: "1rem", marginTop: "1rem" }}>
-              <button onClick={() => setShowDeleteConfirm(false)} disabled={isDeleting}>
+            <div className="form__actions" style={{ justifyContent: "flex-end" }}>
+              <button
+                className="button is-light"
+                onClick={() => setShowDeleteConfirm(false)}
+                disabled={isDeleting}
+              >
                 No
               </button>
-              <button onClick={confirmDelete} disabled={isDeleting} style={{ backgroundColor: "red", color: "white" }}>
-                {isDeleting ? "Deleting..." : "Delete"}
+              <button
+                className="button is-danger"
+                onClick={confirmDelete}
+                disabled={isDeleting}
+              >
+                {isDeleting ? "Deleting..." : "Yes, delete"}
               </button>
             </div>
           </div>
