@@ -207,6 +207,10 @@ tr:hover {
   font-weight: bold;
 }
 
+.task__description {
+  width: 10rem;
+}
+
 .task-labels {
   display: flex;
   flex-wrap: wrap;

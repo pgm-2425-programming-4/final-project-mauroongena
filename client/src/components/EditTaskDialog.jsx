@@ -21,8 +21,8 @@ function EditTaskDialog({ task, taskStatuses, taskLabels = [], onClose, onSaveSu
       setFormData({
         title: task.title,
         description: task.description,
-        task_status: task.task_status?.id || "",
-        task_labels: task.task_labels?.map((label) => label.id) || [],
+        task_status: task.task_status.id || "",
+        task_labels: task.task_labels.map((label) => label.id) || [],
       });
     }
   }, [task]);
@@ -85,8 +85,9 @@ function EditTaskDialog({ task, taskStatuses, taskLabels = [], onClose, onSaveSu
 
     try {
       await deleteTask(task.documentId);
-    } catch (error) {
-      console.error("Fout bij verwijderen taak:", error);
+    } catch {
+      
+      console.log("");
     } finally {
       setIsDeleting(false);
     }

@@ -8,7 +8,7 @@ function TaskItem({ task, taskStatuses, taskLabels, projectId, selectedLabel, on
 
   const handleSaveSuccess = async () => {
     await queryClient.invalidateQueries(["tasks", projectId, selectedLabel]);
-    onSaveSuccess?.();
+    onSaveSuccess();
     setIsEditing(false);
   };
 
