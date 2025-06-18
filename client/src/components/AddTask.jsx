@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Plus from "../assets/svg/plus-svgrepo-com.svg";
 
 function AddTask({ isOpen, onClose, onAdd, selectedProjectId, taskStatuses = [], taskLabels = [] }) {
   const [title, setTitle] = useState("");
@@ -125,7 +126,7 @@ function AddTask({ isOpen, onClose, onAdd, selectedProjectId, taskStatuses = [],
           <div className="form__actions addtask_buttons">
             <div className="action__buttons ">
               <button className="button is-outlined is-info is-dark" type="button" onClick={onClose}>Cancel</button>
-              <button className="button is-primary" type="submit">Add</button>
+              <button className="button is-primary add__button" type="submit"> <img className="inline__svg plus__svg" src={Plus} alt="plus icon" /> Add</button>
             </div>
           </div>
         </form>

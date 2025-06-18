@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import EditTaskDialog from "./EditTaskDialog";
+import Pencil from "../assets/svg/pencil-svgrepo-com.svg";
 
 function TaskItem({ task, taskStatuses, taskLabels, projectId, selectedLabel, onSaveSuccess }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -8,7 +9,7 @@ function TaskItem({ task, taskStatuses, taskLabels, projectId, selectedLabel, on
 
   const handleSaveSuccess = async () => {
     await queryClient.invalidateQueries(["tasks", projectId, selectedLabel]);
-    onSaveSuccess?.();
+    onSaveSuccess();
     setIsEditing(false);
   };
 
@@ -21,7 +22,7 @@ function TaskItem({ task, taskStatuses, taskLabels, projectId, selectedLabel, on
           <span key={label.id} className="task-label">{label.title}</span>
         ))}
       </span>
-      <button onClick={() => setIsEditing(true)}>Edit</button>
+      <button className="edit__button" onClick={() => setIsEditing(true)}><img className="inline__svg pencil__svg" src={Pencil} alt="pencil svg" /> Edit</button>
 
       {isEditing && (
         <EditTaskDialog
