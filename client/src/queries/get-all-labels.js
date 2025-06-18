@@ -9,7 +9,9 @@ export async function getAllTaskLabels() {
       Authorization: `Bearer ${API_TOKEN}`,
     },
   });
+
   if (!result.ok) throw new Error("Failed to fetch task labels");
-  const data = await result.json();
-  return data.data;
+
+  const json = await result.json();
+  return json.data ?? [];
 }

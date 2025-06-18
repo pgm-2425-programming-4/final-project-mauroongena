@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+
 import { getTaskStatuses } from "../../../queries/get-task-statuses";
 import { getTasksByProject } from "../../../queries/get-tasks-by-project";
-import AddTask from "../../../components/AddTask";
+import { getAllTaskLabels } from "../../../queries/get-all-labels";
 import { postTask } from "../../../queries/post-task";
+
+import AddTask from "../../../components/AddTask";
 import TaskColumns from "../../../components/TaskColumns";
 import FilterBar from "../../../components/FilterBar";
 
@@ -26,16 +29,23 @@ function ProjectPage() {
     queryFn: getTaskStatuses,
   });
 
-  const {
-    data: taskData,
-    isLoading: tasksLoading,
-  } = useQuery({
+  const { data: taskData } = useQuery({
     queryKey: ["tasks", projectId, selectedLabel],
     queryFn: () => getTasksByProject(projectId, selectedLabel),
   });
 
-  const taskStatuses = statusData?.data || [];
-  const tasks = taskData?.data || [];
+  const { data: labelResponse, isLoading: labelsLoading } = useQuery({
+    queryKey: ["taskLabels"],
+    queryFn: getAllTaskLabels,
+  });
+
+  const taskStatuses = statusData?.data ?? [];
+  const tasks = taskData?.data ?? [];
+
+  const taskLabels = labelResponse?.map(label => ({
+    id: label.id,
+    title: label.title,
+  })) ?? [];
 
   const filteredTasks = tasks.filter((task) => {
     const matchesSearch =
@@ -44,11 +54,11 @@ function ProjectPage() {
     return matchesSearch;
   });
 
-  const allLabels = [];
+  const allLabelsFromTasks = [];
   tasks.forEach((task) => {
     (task.task_labels || []).forEach((label) => {
-      if (!allLabels.find((lab) => lab.id === label.id)) {
-        allLabels.push(label);
+      if (!allLabelsFromTasks.find((lab) => lab.id === label.id)) {
+        allLabelsFromTasks.push(label);
       }
     });
   });
@@ -98,8 +108,8 @@ function ProjectPage() {
   return (
     <div>
       <FilterBar
-        taskLabels={allLabels}
-        labelsLoading={tasksLoading}
+        taskLabels={taskLabels}
+        labelsLoading={labelsLoading}
         projects={projects}
         selectedProjectId={selectedProject.id}
         selectedLabel={selectedLabel}
@@ -111,7 +121,7 @@ function ProjectPage() {
 
       <TaskColumns
         taskStatuses={taskStatuses}
-        taskLabels={allLabels}
+        taskLabels={taskLabels}
         tasks={filteredTasks}
         projectId={projectId}
         selectedLabel={selectedLabel}
@@ -125,7 +135,7 @@ function ProjectPage() {
         projects={projects}
         selectedProjectId={selectedProject.id}
         taskStatuses={taskStatuses}
-        taskLabels={allLabels}
+        taskLabels={taskLabels}
       />
     </div>
   );
