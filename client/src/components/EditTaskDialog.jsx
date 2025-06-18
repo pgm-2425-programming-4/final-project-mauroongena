@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useUpdateTask } from "../queries/useUpdateTask";
 import { deleteTask } from "../queries/delete-task";
+import Bin from "../assets/svg/bin-svgrepo-com.svg"
 
 function EditTaskDialog({ task, taskStatuses, taskLabels = [], onClose, onSaveSuccess }) {
   const [formData, setFormData] = useState({
@@ -182,7 +183,7 @@ function EditTaskDialog({ task, taskStatuses, taskLabels = [], onClose, onSaveSu
                   onClick={() => setShowDeleteConfirm(true)}
                   disabled={isDeleting}
                 >
-                  {isDeleting ? "Deleting..." : "Delete"}
+                  {isDeleting ? "Deleting..." : <img className="inline__svg" src={Bin} alt="Bin svg" />}
                 </button>
               <div className="action__buttons">
 
