@@ -19,7 +19,9 @@ function TaskColumns({ taskStatuses, taskLabels, tasks, projectId, selectedLabel
         return (
           <div key={status.title} className="task-column">
             <h3>{status.title}</h3>
-            <ul className="task-column__list">
+            <ul className={`task-column__list${
+              tasksForStatus.length > 1 ? " task-column__list--scrollable" : ""
+            }`}>
               {tasksForStatus.length > 0 ? (
                 tasksForStatus.map((task) => (
                   <TaskItem

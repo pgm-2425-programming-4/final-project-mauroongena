@@ -331,8 +331,15 @@ dialog {
 }
 
 .task-column__list {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: #4a6a91 transparent;
+}
+
+.task-column__list--scrollable {
   overflow-y: scroll;
-  height: 70vh;
 }
 
 .dialog-overlay {
