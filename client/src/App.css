@@ -473,6 +473,11 @@ textarea.form__input {
   justify-content: flex-end !important;
 }
 
+.edittask_buttons {
+  display: flex;
+  justify-content: space-between !important;
+}
+
 .delete-confirm-backdrop {
   position: fixed;
   top: 0;

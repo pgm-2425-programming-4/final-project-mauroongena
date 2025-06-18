@@ -174,8 +174,7 @@ function EditTaskDialog({ task, taskStatuses, taskLabels = [], onClose, onSaveSu
               </label>
             </div>
 
-            <div className="form__actions addtask_buttons">
-              <div className="action__buttons">
+            <div className="form__actions edittask_buttons">
                 <button
                   className="button is-danger"
                   type="button"
@@ -184,6 +183,7 @@ function EditTaskDialog({ task, taskStatuses, taskLabels = [], onClose, onSaveSu
                 >
                   {isDeleting ? "Deleting..." : "Delete"}
                 </button>
+              <div className="action__buttons">
 
                 <button
                   className="button is-outlined is-info is-dark"
@@ -214,7 +214,7 @@ function EditTaskDialog({ task, taskStatuses, taskLabels = [], onClose, onSaveSu
               Are you sure you want to delete task{" "}
               <strong>"{task.title}"</strong>?
             </p>
-            <div className="form__actions" style={{ justifyContent: "flex-end" }}>
+            <div className="form__actions" style={{ justifyContent: "flex-end", gap: "1rem" }}>
               <button
                 className="button is-light"
                 onClick={() => setShowDeleteConfirm(false)}
