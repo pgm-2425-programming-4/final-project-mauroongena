@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useUpdateTask } from "../queries/useUpdateTask";
 import { deleteTask } from "../queries/delete-task";
+import Bin from "../assets/svg/bin-svgrepo-com.svg"
 
 function EditTaskDialog({ task, taskStatuses, taskLabels = [], onClose, onSaveSuccess }) {
   const [formData, setFormData] = useState({
@@ -21,8 +22,8 @@ function EditTaskDialog({ task, taskStatuses, taskLabels = [], onClose, onSaveSu
       setFormData({
         title: task.title,
         description: task.description,
-        task_status: task.task_status?.id || "",
-        task_labels: task.task_labels?.map((label) => label.id) || [],
+        task_status: task.task_status.id || "",
+        task_labels: task.task_labels.map((label) => label.id) || [],
       });
     }
   }, [task]);
@@ -85,8 +86,9 @@ function EditTaskDialog({ task, taskStatuses, taskLabels = [], onClose, onSaveSu
 
     try {
       await deleteTask(task.documentId);
-    } catch (error) {
-      console.error("Fout bij verwijderen taak:", error);
+    } catch {
+      
+      console.log("");
     } finally {
       setIsDeleting(false);
     }
@@ -181,7 +183,7 @@ function EditTaskDialog({ task, taskStatuses, taskLabels = [], onClose, onSaveSu
                   onClick={() => setShowDeleteConfirm(true)}
                   disabled={isDeleting}
                 >
-                  {isDeleting ? "Deleting..." : "Delete"}
+                  {isDeleting ? "Deleting..." : <img className="inline__svg" src={Bin} alt="Bin svg" />}
                 </button>
               <div className="action__buttons">
 
@@ -199,7 +201,7 @@ function EditTaskDialog({ task, taskStatuses, taskLabels = [], onClose, onSaveSu
                   type="submit"
                   disabled={isPending || isDeleting}
                 >
-                  {isPending ? "Saving..." : "Save"}
+                  {isPending ? "Saving..." : "Save" }
                 </button>
               </div>
             </div>
