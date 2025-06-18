@@ -538,3 +538,18 @@ textarea.form__input {
   gap: 1rem;
   margin-top: 1rem;
 }
+
+.inline__svg {
+  width: 2rem;
+  align-items: center;
+}
+
+.pencil__svg {
+  margin-left: -.5rem;
+}
+
+.edit__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
