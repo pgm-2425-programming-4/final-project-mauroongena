@@ -207,6 +207,10 @@ tr:hover {
   font-weight: bold;
 }
 
+.task__description {
+  width: 10rem;
+}
+
 .task-labels {
   display: flex;
   flex-wrap: wrap;
@@ -533,4 +537,19 @@ textarea.form__input {
   justify-content: center;
   gap: 1rem;
   margin-top: 1rem;
+}
+
+.inline__svg {
+  width: 2rem;
+  align-items: center;
+}
+
+.pencil__svg {
+  margin-left: -.5rem;
+}
+
+.edit__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
