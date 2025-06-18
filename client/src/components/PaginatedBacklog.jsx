@@ -26,6 +26,8 @@ export function PaginatedBacklog({ project }) {
     return <p>Geen taken gevonden voor dit project</p>;
   }
 
+  const isLastPage = tasks.length < pageSize || meta.page === meta.pageCount;
+
   return (
     <div className="paginated-backlog">
       <h2>{project.title}</h2>
@@ -39,6 +41,7 @@ export function PaginatedBacklog({ project }) {
           setPageSize(size);
           setPage(1);
         }}
+        isLastPage={isLastPage}
       />
     </div>
   );

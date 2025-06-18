@@ -5,52 +5,72 @@
   flex-direction: column;
 }
 
-table {
-  border-collapse: collapse;
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-}
-
 button {
   color: #ffffff;
 }
 
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  margin: 0 auto;
+  background-color: #213547;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
 th,
 td {
-  border: 1px solid #888;
-  padding: 0.5rem;
-  text-align: center;
+  padding: 1rem;
+  text-align: left;
   vertical-align: middle;
-  color: #121212 !important;
+  color: #f0f4f8;
+  border-bottom: 1px solid #3d516e;
+}
+
+th {
+  background-color: #3D5A80;
+  color: #ffffff;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+tr:nth-child(even) {
+  background-color: #2a3d55;
+}
+
+tr:hover {
+  background-color: #374357;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .paginated-backlog {
-  background-color: #ededed;
+  background-color: #0F1C2E;
   border-radius: 0.5rem;
-  min-height: 30rem;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   gap: 2rem;
-  padding: 1rem 2rem;
-  color: #121212;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  color: #f0f4f8;
 }
 
 .pagination-container {
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .backlog-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-  justify-content: center;
-  align-items: start;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .header__title {
@@ -311,8 +331,15 @@ dialog {
 }
 
 .task-column__list {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: #4a6a91 transparent;
+}
+
+.task-column__list--scrollable {
   overflow-y: scroll;
-  height: 70vh;
 }
 
 .dialog-overlay {
@@ -348,8 +375,8 @@ dialog {
 }
 
 .edit-dialog {
-  background: #3D5A80;
-  color: #000;
+  background: rgb(30, 45, 64);
+  color: #fff;
   padding: 2rem;
   border-radius: 8px;
   width: 100%;
@@ -374,4 +401,136 @@ dialog {
 .dialog__title {
   font-size: 1.5rem;
   margin-bottom: 1rem;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.form__input {
+  padding: 0.5rem;
+  border-radius: 4px;
+  width: 100%;
+  background-color: #3d516e !important;
+}
+
+.form__row {
+  display: flex;
+  gap: 1rem;
+}
+
+.form__row--full {
+  grid-column: span 2;
+  width: 100%;
+}
+
+textarea.form__input {
+  resize: none;
+  width: 100%;
+  height: 7rem;
+  box-sizing: border-box;
+}
+
+.form__label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.form__checkbox-group {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.form__checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.form__checkbox-item {
+  position: relative;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 2px solid transparent;
+  background-color: #3d516e;
+  color: white;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+  user-select: none;
+  font-size: 0.9rem;
+}
+
+.form__checkbox-item input[type="checkbox"] {
+  display: none;
+}
+
+.form__checkbox-item.selected {
+  border-color: #00d1b2;
+  background-color: #4a6a91;
+}
+
+.form__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  grid-column: span 2;
+}
+
+.delete__button button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+.action__buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.addtask_buttons {
+  display: flex;
+  justify-content: flex-end !important;
+}
+
+.edittask_buttons {
+  display: flex;
+  justify-content: space-between !important;
+}
+
+.delete-confirm-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.delete-confirm-dialog {
+  background: #4a6a91;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+.confirm-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
 }

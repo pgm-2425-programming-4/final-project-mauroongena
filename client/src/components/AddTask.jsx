@@ -7,6 +7,15 @@ function AddTask({ isOpen, onClose, onAdd, selectedProjectId, taskStatuses = [],
   const [labels, setLabels] = useState([]);
   const [labelError, setLabelError] = useState("");
 
+  function resetForm() {
+    setTitle("");
+    setDescription("");
+    setStatus("");
+    setLabels([]);
+    setLabelError("");
+  }
+
+
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -23,7 +32,8 @@ function AddTask({ isOpen, onClose, onAdd, selectedProjectId, taskStatuses = [],
       task_labels: labels,
     };
     onAdd(newTask);
-    onClose(); // Reset after adding
+    resetForm();
+    onClose();
   }
 
   if (!isOpen) return null;
@@ -31,36 +41,69 @@ function AddTask({ isOpen, onClose, onAdd, selectedProjectId, taskStatuses = [],
   return (
     <div className="edit-dialog-backdrop">
       <div className="edit-dialog">
-        <h2>Add Task</h2>
-        <form onSubmit={handleSubmit}>
-          <label>
+        <h2 className="dialog__title">Add Task</h2>
+        <form className="form" onSubmit={handleSubmit}>
+        <div className="form__row">
+          <label className="form__label">
             Title:
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
+              className="form__input input"
             />
           </label>
-
-          <label>
+        </div>
+        <div className="form__row">
+         <label className="form__label">
+            Status:
+            <div className="select">
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                required
+                className="form__input"
+              >
+                <option value="">-- Select Status --</option>
+                {taskStatuses.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+           
+          </label>
+        </div>
+          
+        <div className="form__row form__row--full">
+          <label className="form__label">
             Description:
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
+              className="form__input textarea"
             />
           </label>
-
-          <label>
-            Labels:
-            <div>
-              {taskLabels.map((label) => (
-                <label key={label.id}>
+        </div>
+        
+       <div className="form__row form__row--full">
+        <label className="form__label">
+          Labels:
+          <div className="form__checkbox-group">
+            {taskLabels.map((label) => {
+              const isChecked = labels.includes(label.id);
+              return (
+                <label
+                  key={label.id}
+                  className={`form__checkbox-item ${isChecked ? 'selected' : ''}`}
+                >
                   <input
                     type="checkbox"
                     value={label.id}
-                    checked={labels.includes(label.id)}
+                    checked={isChecked}
                     onChange={(e) => {
                       const checked = e.target.checked;
                       setLabels((prev) =>
@@ -72,30 +115,18 @@ function AddTask({ isOpen, onClose, onAdd, selectedProjectId, taskStatuses = [],
                   />
                   {label.title}
                 </label>
-              ))}
+              );
+            })}
+          </div>
+          {labelError && <p style={{ color: "red" }}>{labelError}</p>}
+        </label>
+      </div>
+
+          <div className="form__actions addtask_buttons">
+            <div className="action__buttons ">
+              <button className="button is-outlined is-info is-dark" type="button" onClick={onClose}>Cancel</button>
+              <button className="button is-primary" type="submit">Add</button>
             </div>
-            {labelError && <p style={{ color: "red" }}>{labelError}</p>}
-          </label>
-
-          <label>
-            Status:
-            <select
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-              required
-            >
-              <option value="">-- Select Status --</option>
-              {taskStatuses.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.title}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <div>
-            <button type="submit">Add</button>
-            <button type="button" onClick={onClose}>Cancel</button>
           </div>
         </form>
       </div>

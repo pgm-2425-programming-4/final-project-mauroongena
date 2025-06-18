@@ -4,6 +4,7 @@ export function Pagination({
   onPageChange,
   pageSize,
   onPageSizeChange,
+  isLastPage,
 }) {
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
@@ -29,6 +30,10 @@ export function Pagination({
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage <= 1}
+        style={{
+          opacity: currentPage <= 1 ? 0.5 : 1,
+          cursor: currentPage <= 1 ? "not-allowed" : "pointer",
+        }}
       >
         Vorige
       </button>
@@ -41,6 +46,8 @@ export function Pagination({
           style={{
             fontWeight: number === currentPage ? "bold" : "normal",
             textDecoration: number === currentPage ? "underline" : "none",
+            opacity: number === currentPage ? 0.6 : 1,
+            cursor: number === currentPage ? "default" : "pointer",
           }}
         >
           {number}
@@ -49,7 +56,12 @@ export function Pagination({
 
       <button
         onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage >= totalPages}
+        disabled={currentPage >= totalPages || isLastPage}
+        style={{
+          opacity: currentPage >= totalPages || isLastPage ? 0.5 : 1,
+          cursor:
+            currentPage >= totalPages || isLastPage ? "not-allowed" : "pointer",
+        }}
       >
         Volgende
       </button>
