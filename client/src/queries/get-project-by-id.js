@@ -1,8 +1,6 @@
 import { API_URL, API_TOKEN } from "../constants/constants.js";
 
 export async function getProjectById(projectId) {
-  console.log("getProjectById: " + projectId);
-
   const url = `${API_URL}/projects/${projectId}`;
   const result = await fetch(url, {
     method: "GET",

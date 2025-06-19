@@ -6,7 +6,6 @@ export const Route = createFileRoute("/projects/$projectId/backlog")({
   loader: async ({ params }) => {
     const projectId = params.projectId;
     const projectData = await getProjectById(projectId);
-    console.log("projectData in loader:", projectData);
 
     const projectObj = projectData.data;
     if (!projectObj || !projectObj.id) {

@@ -5,13 +5,9 @@ export async function updateTask(documentId, data) {
   const task = await getTaskByDocumentId(documentId);
 
   if (!task) {
-    console.error("❌ Task not found for documentId:", documentId);
+    console.error("Task not found for documentId:", documentId);
     throw new Error("Task not found");
   }
-
-  const strapiId = task.id;
-  console.log("🛠 Updating Strapi Task ID:", strapiId, "with data:", data);
-
   const url = `${API_URL}/tasks/${documentId}`;
 
   const result = await fetch(url, {
@@ -25,7 +21,7 @@ export async function updateTask(documentId, data) {
 
   if (!result.ok) {
     const errorText = await result.text();
-    console.error("❌ Failed to update task:", errorText);
+    console.error("Failed to update task:", errorText);
     throw new Error("Failed to update task");
   }
 
